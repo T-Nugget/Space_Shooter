@@ -14,9 +14,12 @@ public class PlayerController : MonoBehaviour
      public float fireRate;
      private float nextFire;
      public Boundary boundary;
-    public GameObject shot;
-    public Transform shotSpawn;
+     public GameObject shot;
+     public Transform shotSpawn;
      private Rigidbody rb;
+
+     public AudioClip weapon_player;
+     public AudioSource musicSource;
 
      private void Start()
      {
@@ -43,8 +46,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+         musicSource.clip = weapon_player;
         if (Input.GetButton("Fire1") && Time.time > nextFire)
         {
+          musicSource.Play();
           nextFire = Time.time + fireRate;
           Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
           }

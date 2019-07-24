@@ -3,7 +3,11 @@ guid: e1f23d8f2b77ef644945540de7157d57
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - shot: {instanceID: 0}
+  - shotSpawn: {instanceID: 0}
+  - weapon_player: {fileID: 8300000, guid: bf75b984df8a84987bcf3a8bf6e2862d, type: 3}
+  - musicSource: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
