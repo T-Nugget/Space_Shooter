@@ -6,6 +6,15 @@ public class Destroy_By_Boundry : MonoBehaviour
 {
     void OnTriggerExit(Collider other)
     {
-        Destroy(other.gameObject);
+        if (other.CompareTag ("Hitbox"))
+        {
+            return;                      
+        }
+
+        else
+        {
+            Destroy(other.gameObject);
+        }
+        
     }
 }

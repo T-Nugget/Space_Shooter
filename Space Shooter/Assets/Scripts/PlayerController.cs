@@ -15,15 +15,25 @@ public class PlayerController : MonoBehaviour
      private float nextFire;
      public Boundary boundary;
      public GameObject shot;
-     public Transform shotSpawn;
+     public Transform[] shotSpawns;
+     public Transform singleShot;
+     public bool Pow;
      private Rigidbody rb;
+     Collider m_Collider;
+     
 
      public AudioClip weapon_player;
      public AudioSource musicSource;
+ 
+     
+     public GameController myGameController;
 
      private void Start()
      {
           rb = GetComponent<Rigidbody>();
+          m_Collider = GetComponent<Collider>();
+          Pow=false;
+
      }
 
      void FixedUpdate()
@@ -44,18 +54,57 @@ public class PlayerController : MonoBehaviour
           rb.rotation = Quaternion.Euler(0.0f, 0.0f, rb.velocity.x * -tilt);
      }
 
+     void OnTriggerEnter(Collider other)
+    {
+          if (other.CompareTag ("PowerUp"))
+          {
+               Pow = true;
+               Destroy(other.gameObject);               
+          }
+    }
+
+
+
+
+
+
+
+
     void Update()
     {
-         musicSource.clip = weapon_player;
-        if (Input.GetButton("Fire1") && Time.time > nextFire)
-        {
-          musicSource.Play();
-          nextFire = Time.time + fireRate;
-          Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
-          }
-        if (Input.GetKey("escape"))
-     Application.Quit();
+          musicSource.clip = weapon_player; 
+          
+          if (Input.GetButton("Fire1") && Time.time > nextFire)
+          {
+               nextFire = Time.time + fireRate;
 
-    }
+                    if (Pow == true)
+                    {                                       
+                         foreach (var shotSpawn in shotSpawns)
+                         {
+                              nextFire = Time.time + (fireRate/2);
+                              Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+                         }               
+
+                    }                     
+ 
+              
+               Instantiate(shot, singleShot.position, singleShot.rotation);
+
+               musicSource.Play();
+          }
+
+          if (Input.GetKey("escape"))
+          Application.Quit();
+
+          if (myGameController.score >= 300)
+          {    
+               m_Collider.enabled = false;
+               transform.position = new Vector3(rb.position.x,9,rb.position.z);
+               //gameObject.transform.Rotate(new Vector3(-45, 0, 0));
+               transform.localScale = new Vector3(2,2,2);
+
+          }
+     }
 
 }
